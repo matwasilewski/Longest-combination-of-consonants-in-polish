@@ -49,7 +49,7 @@ class Vowels:
 	def print_to_file(self, file, list_to_pass):
 		f = io.open(file, 'w', encoding='utf-8')
 		for element in list_to_pass:
-			f.write(element)
+			f.write(element + '\n')
 		f.close()
 
 	# creates a dict with words having sequence of consonants at the beginning of given lenght
@@ -71,8 +71,26 @@ class Vowels:
 			longest_start[int(check)].append(word)
 		return longest_start
 
+	def ending_consonants(self):
+		longest_end = {0 : [], 1 : [], 2 : [], 3 : [], 4 : [], 5 : [], 6 : [], 7 : [], 8 : [], 9 : [], 10 : []}
+		for word in self.words_list:
+			check = 0
+			for position, letter in enumerate(reversed(word)):
+				# print (letter)
+				# for a in self.vowels:
+				# 	print (letter, a, letter == a)
+				if letter in self.vowels:
+					check = position
+					break
+				elif position + 1 == len(word):
+					check = position + 1
+				else:
+					check = position
+			longest_end[int(check)].append(word)
+		return longest_end
+
 # 0. Initialize instance of Vowels. As input, give (a) dictionary file, (b) output file for starting (c) vowelless.txt (d) output file for ending
-instance = Vowels('slowa.txt', sys.argv[1], 'vowelless.txt')
+instance = Vowels('slowa.txt', sys.argv[1], 'vowelless.txt', sys.argv[2]	)
 # 1. Create a list based on dictionary.
 instance.dictionary_to_list()
 # 2. Create vowelless LIST.
@@ -81,9 +99,24 @@ instance.no_vowels()
 instance.print_to_file(instance.vowelless_file, instance.vowelless)
 # 4. Create a dictionary, sorting words based on number of consonants at their beginning ('scholar' sorted as 3, 'cat' as 1, etc.)
 beginning_consonants = instance.starting_consonants()
-# To test, print keys of newly created dictionary.
-print(beginning_consonants.keys())
+
 # That part is basically hard-coded - as it comes out, longest sequence of consonants at the beginning of polish words is 6
 # Hence I will print this sequence to a variable, and then a file.
 final_start = beginning_consonants[6]
-instance.print_to_file(instance.outputfile_start)
+instance.print_to_file(instance.outputfile_start, final_start)
+
+# The same I do with the last consonants
+last_consonants = instance.ending_consonants()
+final_end = last_consonants[5]
+instance.print_to_file(instance.outputfile_end, final_end)
+
+
+
+
+
+
+
+
+
+
+
